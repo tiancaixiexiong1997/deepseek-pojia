@@ -2,6 +2,7 @@
 
 DeepSeek Harness（dsh）的**破甲 / 红队评测插件**，本仓库 = 一个可直接 `git clone` 就能装上的 dsh-purge（1.1.71，已冻结自动更新），外加**一条命令的安装器**。
 
+- 当前版本：**[v1.1.71](https://github.com/tiancaixiexiong1997/deepseek-pojia/releases/tag/v1.1.71)**（钉 tag 安装可复现；`main` 跟最新提交）
 - 上游：[YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)（MIT，作者已暂停更新，故本仓库自持一份可复现的版本，署名见 [NOTICE-UPSTREAM.md](NOTICE-UPSTREAM.md)）
 - 目标宿主：DeepSeek Harness **0.2.x**（桌面端 EXE 与官方 `dsh web` 都支持）
 - 平台：macOS / Linux / Windows
@@ -10,7 +11,22 @@ DeepSeek Harness（dsh）的**破甲 / 红队评测插件**，本仓库 = 一个
 
 ## 一条命令安装
 
-macOS / Linux：
+**钉版本（推荐，智能体 / 批量部署用这个）** —— 不受 `main` 变动影响，当前 `v1.1.71`：
+
+```bash
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/tiancaixiexiong1997/deepseek-pojia/v1.1.71/install.sh | POJIA_REF=v1.1.71 bash
+
+# GitHub raw 的 CDN 偶发滞后（改了脚本几分钟内还是旧的），走镜像：
+curl -fsSL https://cdn.jsdelivr.net/gh/tiancaixiexiong1997/deepseek-pojia@v1.1.71/install.sh | POJIA_REF=v1.1.71 bash
+```
+
+```powershell
+# Windows
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/tags/v1.1.71.zip -OutFile $env:TEMP\pojia.zip; Expand-Archive $env:TEMP\pojia.zip $env:TEMP\pojia -Force; & \"$env:TEMP\pojia\deepseek-pojia-1.1.71\install.ps1\" -Ref v1.1.71"
+```
+
+**跟最新提交（`main`）** —— macOS / Linux：
 
 ```bash
 git clone https://github.com/tiancaixiexiong1997/deepseek-pojia.git && cd deepseek-pojia && bash install.sh
@@ -36,26 +52,6 @@ Windows 一条命令（自带 `curl.exe` / PowerShell）：
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.zip -OutFile $env:TEMP\pojia.zip; Expand-Archive $env:TEMP\pojia.zip $env:TEMP\pojia -Force; & \"$env:TEMP\pojia\deepseek-pojia-main\install.ps1\""
 ```
-
-### 钉版本安装（推荐给智能体 / 批量部署）
-
-`main` 会跟着提交变；要可复现就钉 tag。当前版本 **v1.1.71**：
-
-```bash
-# macOS / Linux
-curl -fsSL https://raw.githubusercontent.com/tiancaixiexiong1997/deepseek-pojia/v1.1.71/install.sh | POJIA_REF=v1.1.71 bash
-
-# 或者直接下 release 附件再跑
-curl -fsSL -o pojia.tar.gz https://github.com/tiancaixiexiong1997/deepseek-pojia/releases/download/v1.1.71/deepseek-pojia-1.1.71.tar.gz
-tar xzf pojia.tar.gz && cd deepseek-pojia-1.1.71 && bash install.sh
-```
-
-```powershell
-# Windows：tag 版 zip
-powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/tags/v1.1.71.zip -OutFile $env:TEMP\pojia.zip; Expand-Archive $env:TEMP\pojia.zip $env:TEMP\pojia -Force; & \"$env:TEMP\pojia\deepseek-pojia-1.1.71\install.ps1\" -Ref v1.1.71"
-```
-
-版本清单见 [Releases](https://github.com/tiancaixiexiong1997/deepseek-pojia/releases)。
 
 装完**还要应用一次补丁**（这是宿主的设计，任何安装器都替代不了）：
 
