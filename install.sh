@@ -29,6 +29,21 @@ done
 
 say() { printf '  %s\n' "$*"; }
 
+TARBALL="https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.tar.gz"
+
+# curl | bash 时本地没有仓库文件：先落一份 tarball 到临时目录再继续
+if [ ! -f "$HERE/scripts/link-profile.mjs" ]; then
+  echo "== 本地没有仓库文件，先下载一份"
+  TMPDIR_PJ="$(mktemp -d)"
+  if ! curl -fsSL "$TARBALL" | tar xz -C "$TMPDIR_PJ"; then
+    echo "下载失败：$TARBALL" >&2
+    exit 1
+  fi
+  HERE="$(find "$TMPDIR_PJ" -maxdepth 1 -type d -name 'deepseek-pojia-*' | head -1)"
+  [ -n "$HERE" ] || { echo "解压后没找到仓库目录" >&2; exit 1; }
+  trap 'rm -rf "$TMPDIR_PJ"' EXIT
+fi
+
 if ! command -v node >/dev/null 2>&1; then
   echo "需要 Node.js >= 18（推荐 22 LTS）。装完重开终端再跑。" >&2
   exit 1

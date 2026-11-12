@@ -22,12 +22,16 @@ Windows（PowerShell）：
 git clone https://github.com/tiancaixiexiong1997/deepseek-pojia.git; cd deepseek-pojia; powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-没有 git 的机器（Windows 用 `curl.exe` 自带）：
+**没有 git 也行** —— 直接拉脚本跑（`install.sh` 会自己下 tarball 再装）：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/tiancaixiexiong1997/deepseek-pojia/main/install.sh | bash
+```
+
+Windows 一条命令（自带 `curl.exe` / PowerShell）：
 
 ```powershell
-curl.exe -L -o pojia.zip https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.zip
-Expand-Archive pojia.zip -DestinationPath . -Force
-cd deepseek-pojia-main; powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.zip -OutFile $env:TEMP\pojia.zip; Expand-Archive $env:TEMP\pojia.zip $env:TEMP\pojia -Force; & \"$env:TEMP\pojia\deepseek-pojia-main\install.ps1\""
 ```
 
 装完**还要应用一次补丁**（这是宿主的设计，任何安装器都替代不了）：
