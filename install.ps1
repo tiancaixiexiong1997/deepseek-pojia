@@ -13,6 +13,7 @@
 param(
   [ValidateSet('desktop', 'web')][string]$Profile = 'desktop',
   [string]$DshHome = '',
+  [string]$Ref = 'main',
   [switch]$Apply
 )
 
@@ -21,6 +22,7 @@ $ProgressPreference = 'SilentlyContinue'
 
 function Say([string]$m) { Write-Host ("  " + $m) }
 function Bad([string]$m) { Write-Host ("  X  " + $m) -ForegroundColor Red }
+function Warn([string]$m) { Write-Host ("  !  " + $m) -ForegroundColor Yellow }
 
 $Here = $PSScriptRoot
 
@@ -34,7 +36,14 @@ $ver = (& $node.Source -v) 2>$null
 if ($ver -match '^v(\d+)') { $major = [int]$Matches[1] }
 if ($major -lt 18) { Bad ("Node 版本太低（" + $ver + "），需要 >= 18"); exit 1 }
 
+$localVer = ''
+try { $localVer = (Get-Content (Join-Path $Here 'package.json') -Raw | ConvertFrom-Json).version } catch { }
+
 Write-Host '== dsh-purge 一键安装'
+Say ("插件版本：" + $localVer + "   （-Ref " + $Ref + "）")
+if ($Ref -ne 'main' -and $Ref -ne ('v' + $localVer)) {
+  Warn ("你手上的这份是 " + $localVer + "，-Ref 要的是 " + $Ref + "；要钉版本请下 tag 版 zip")
+}
 Say ("插件：" + $Here)
 Say ("profile：" + $Profile)
 Say ("Node：" + $ver)

@@ -20,12 +20,14 @@ fi
 PROFILE="desktop"
 HOME_DIR=""
 APPLY=0
+POJIA_REF="${POJIA_REF:-main}"
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --profile) PROFILE="${2:-desktop}"; shift 2 ;;
     --home)    HOME_DIR="${2:-}"; shift 2 ;;
     --apply)   APPLY=1; shift ;;
+    --ref)     POJIA_REF="${2:-main}"; shift 2 ;;
     -h|--help)
       cat <<'USAGE'
 用法：bash install.sh [选项]
@@ -33,6 +35,7 @@ while [ $# -gt 0 ]; do
   --profile <desktop|web>   装进哪个 profile（默认 desktop）
   --home <DSH_HOME>         手动指定 .dsh 目录
   --apply                   装完直接应用补丁（等价于点「应用」）
+  --ref <main|v1.1.71>      装哪个版本（默认 main；钉版本用 tag）
   -h, --help                这段帮助
 USAGE
       exit 0 ;;
@@ -42,7 +45,12 @@ done
 
 say() { printf '  %s\n' "$*"; }
 
-TARBALL="https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.tar.gz"
+# 装哪个版本：默认 main（跟最新提交）；POJIA_REF=v1.1.71 则钉到 tag
+if [ "$POJIA_REF" = "main" ]; then
+  TARBALL="https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.tar.gz"
+else
+  TARBALL="https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/tags/${POJIA_REF}.tar.gz"
+fi
 
 # curl | bash 时本地没有仓库文件：先落一份 tarball 到临时目录再继续
 if [ ! -f "$HERE/scripts/link-profile.mjs" ]; then

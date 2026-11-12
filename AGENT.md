@@ -24,9 +24,12 @@ node -v
 # 2. 定位 DSH_HOME（按顺序取第一个含 profiles/<profile>/package.json 的）
 #    $DSH_HOME → ~/.dsh → $APPDATA/DeepSeek Harness/dsh-home → $LOCALAPPDATA/DeepSeek Harness/dsh-home
 
-# 3. 安装（二选一）
-bash install.sh --profile desktop            # macOS / Linux
-powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -Profile desktop   # Windows
+# 3. 安装（二选一；批量部署建议钉 tag，当前 v1.1.71）
+bash install.sh --profile desktop --ref v1.1.71            # macOS / Linux（钉 tag，可复现）
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -Profile desktop -Ref v1.1.71   # Windows
+
+# 本地没有仓库（无 git 的机器）：直接拉 tag 版脚本
+curl -fsSL https://raw.githubusercontent.com/tiancaixiexiong1997/deepseek-pojia/v1.1.71/install.sh | POJIA_REF=v1.1.71 bash
 
 # 4. 打印状态，原样贴给用户
 node "$DSH_HOME/plugins/dsh-purge/bin/dsh-purge.js" --status

@@ -86,8 +86,8 @@
     },
     "install": {
       "preferred": "tarball",
-      "tarball": "https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.tar.gz",
-      "zip": "https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/heads/main.zip",
+      "tarball": "https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/tags/v1.1.71.tar.gz",
+      "zip": "https://github.com/tiancaixiexiong1997/deepseek-pojia/archive/refs/tags/v1.1.71.zip",
       "git": "https://github.com/tiancaixiexiong1997/deepseek-pojia.git"
     }
   },
