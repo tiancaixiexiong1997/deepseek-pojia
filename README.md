@@ -26,6 +26,9 @@ git clone https://github.com/tiancaixiexiong1997/deepseek-pojia.git; cd deepseek
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/tiancaixiexiong1997/deepseek-pojia/main/install.sh | bash
+
+# GitHub raw 的 CDN 偶发滞后（改了脚本几分钟内还是旧的），走镜像：
+curl -fsSL https://cdn.jsdelivr.net/gh/tiancaixiexiong1997/deepseek-pojia@main/install.sh | bash
 ```
 
 Windows 一条命令（自带 `curl.exe` / PowerShell）：
