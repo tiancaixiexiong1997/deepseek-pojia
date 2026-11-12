@@ -10,7 +10,13 @@
 # Windows 的 install.ps1 是同一份逻辑。
 set -uo pipefail
 
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 被 curl | bash 时没有 BASH_SOURCE，退到当前目录
+_SRC="${BASH_SOURCE[0]:-}"
+if [ -n "$_SRC" ] && [ -f "$_SRC" ]; then
+  HERE="$(cd "$(dirname "$_SRC")" && pwd)"
+else
+  HERE="$(pwd)"
+fi
 PROFILE="desktop"
 HOME_DIR=""
 APPLY=0
@@ -21,7 +27,14 @@ while [ $# -gt 0 ]; do
     --home)    HOME_DIR="${2:-}"; shift 2 ;;
     --apply)   APPLY=1; shift ;;
     -h|--help)
-      sed -n '2,12p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      cat <<'USAGE'
+用法：bash install.sh [选项]
+
+  --profile <desktop|web>   装进哪个 profile（默认 desktop）
+  --home <DSH_HOME>         手动指定 .dsh 目录
+  --apply                   装完直接应用补丁（等价于点「应用」）
+  -h, --help                这段帮助
+USAGE
       exit 0 ;;
     *) echo "未知参数：$1" >&2; exit 2 ;;
   esac
